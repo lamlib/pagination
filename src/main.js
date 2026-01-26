@@ -125,7 +125,7 @@ export default class Pagination {
 
         if (this.cardRenderer) {
             container.innerHTML = '';
-            container.classList.add(this.cssClasses.row);
+            container.classList.add(...this.cssClasses.row?.split(" "));
             pageData.forEach((item, index) => {
                 const cardHtml = this.cardRenderer(index + start, item);
                 const card = document.createElement('div');
