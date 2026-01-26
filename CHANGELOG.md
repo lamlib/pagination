@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.1](https://github.com/lamlib/pagination/compare/v1.4.0...v1.4.1) (2026-01-26)
+
+
+### Bug Fixes
+
+* export ([f30e103](https://github.com/lamlib/pagination/commit/f30e1032463f957c6be459321a436c99493e1880))
+
 ## [1.4.0](https://github.com/lamlib/pagination/compare/v1.3.0...v1.4.0) (2026-01-26)
 
 
