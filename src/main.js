@@ -51,11 +51,25 @@ const XLSExport = (function () {
 
 class Pagination {
     constructor(options) {
+        this.cssClasses = {
+            btnActive: 'btn btn-info',
+            btnNormal: 'btn btn-outline-info',
+            row: 'row',
+            col: 'col',
+            formSelect: 'form-select',
+            totalSize: '',
+            ellipsis: '',
+            ...(options.cssClasses || {})
+        };
+
         this.text = options.text || {
             prevBtn: 'Previous',
             nextBtn: 'Next',
-        }
-        this.tableId = options.tableId || 'data-table';
+            records: 'Records',
+            page: 'Page',
+        };
+        
+        this.tableId = options.tableId?.trim() || 'data-table';
         this.itemsPerPage = options.itemsPerPage || 5;
         this.formartXLS = options.formartXLS || (data => data);
         this.nameXLS = options.nameXLS || 'data';
@@ -111,11 +125,11 @@ class Pagination {
 
         if (this.cardRenderer) {
             container.innerHTML = '';
-            container.classList.add('row');
+            container.classList.add(this.cssClasses.row);
             pageData.forEach((item, index) => {
                 const cardHtml = this.cardRenderer(index + start, item);
                 const card = document.createElement('div');
-                card.className = `col-${Math.floor(12 / this.gridColumns)}`;
+                card.className = `${this.cssClasses.col}-${Math.floor(12 / this.gridColumns)}`;
                 card.innerHTML = cardHtml;
                 container.appendChild(card);
             });
@@ -142,41 +156,41 @@ class Pagination {
         let pageNumbersHtml = '';
 
         if (this.isShowTotalSize) {
-            pageNumbersHtml += `<span id="pag-total-size">${this.totalSize} records</span>`;
+            pageNumbersHtml += `<span class="${this.cssClasses.totalSize}">${this.totalSize} ${this.text.records || "records"}</span>`;
         }
 
         const startPage = Math.max(1, this.currentPage - Math.floor(this.maxPagesToShow / 2));
         const endPage = Math.min(totalPages, startPage + this.maxPagesToShow - 1);
 
-        pageNumbersHtml += `<button id="${this.tableId}-prev-btn" class="btn btn-outline-info" ${this.currentPage === 1 ? 'disabled' : ''}>${this.text.prevBtn}</button>`;
+        pageNumbersHtml += `<button id="${this.tableId}-prev-btn" class="${this.currentPage === 1 ? this.cssClasses.btnActive : this.cssClasses.btnNormal}">${this.text.prevBtn}</button>`;
 
         if (startPage > 1) {
-            pageNumbersHtml += `<button class="btn btn-outline-info page-btn" data-page="1">1</button>`;
-            if (startPage > 2) pageNumbersHtml += `<span>...</span>`;
+            pageNumbersHtml += `<button class="${this.cssClasses.btnNormal} ${this.tableId + '-page-btn'}" data-page="1">1</button>`;
+            if (startPage > 2) pageNumbersHtml += `<span class="${this.cssClasses.ellipsis}">...</span>`;
         }
 
         for (let i = startPage; i <= endPage; i++) {
-            pageNumbersHtml += `<button class="btn btn-outline-info page-btn" data-page="${i}" ${this.currentPage === i ? 'disabled' : ''}>${i}</button>`;
+            pageNumbersHtml += `<button class="${this.currentPage === i ? this.cssClasses.btnActive : this.cssClasses.btnNormal} ${this.tableId + '-page-btn'}" data-page="${i}">${i}</button>`;
         }
 
         if (endPage < totalPages) {
-            if (endPage < totalPages - 1) pageNumbersHtml += `<span>...</span>`;
-            pageNumbersHtml += `<button class="btn btn-outline-info page-btn" data-page="${totalPages}">${totalPages}</button>`;
+            if (endPage < totalPages - 1) pageNumbersHtml += `<span class="${this.cssClasses.ellipsis}">...</span>`;
+            pageNumbersHtml += `<button class="${this.cssClasses.btnNormal} ${this.tableId + '-page-btn'}" data-page="${totalPages}">${totalPages}</button>`;
         }
 
-        pageNumbersHtml += `<button id="${this.tableId}-next-btn" class="btn btn-outline-info" ${this.currentPage === totalPages ? 'disabled' : ''}>${this.text.nextBtn}</button>`;
+        pageNumbersHtml += `<button id="${this.tableId}-next-btn" class="${this.currentPage === totalPages ? this.cssClasses.btnActive : this.cssClasses.btnNormal}">${this.text.nextBtn}</button>`;
 
         if (this.showPageSelect) {
-            pageNumbersHtml += `<select id="${this.tableId}-page-select" class="form-select">`;
+            pageNumbersHtml += `<select id="${this.tableId}-page-select" class="${this.cssClasses.formSelect}">`;
             for (let i = 1; i <= totalPages; i++) {
-                pageNumbersHtml += `<option value="${i}" ${this.currentPage === i ? 'selected' : ''}>Page ${i}</option>`;
+                pageNumbersHtml += `<option value="${i}" ${this.currentPage === i ? 'selected' : ''}>${this.text.page || 'Page'} ${i}</option>`;
             }
             pageNumbersHtml += `</select>`;
         }
 
         if (this.showItemsPerPageSelect) {
             pageNumbersHtml += `
-                <select id="${this.tableId}-items-per-page" class="form-select">
+                <select id="${this.tableId}-items-per-page" class="${this.cssClasses.formSelect}">
                     <option value="5" ${this.itemsPerPage === 5 ? 'selected' : ''}>5</option>
                     <option value="10" ${this.itemsPerPage === 10 ? 'selected' : ''}>10</option>
                     <option value="20" ${this.itemsPerPage === 20 ? 'selected' : ''}>20</option>
@@ -191,7 +205,7 @@ class Pagination {
     addEventListeners() {
         const prevButton = document.getElementById(`${this.tableId}-prev-btn`);
         const nextButton = document.getElementById(`${this.tableId}-next-btn`);
-        const pageButtons = document.getElementById(this.paginationContainerId).querySelectorAll('.page-btn');
+        const pageButtons = document.getElementById(this.paginationContainerId).querySelectorAll(`.${this.tableId + '-page-btn'}`);
         const pageSelect = document.getElementById(`${this.tableId}-page-select`);
         const itemsPerPageSelect = document.getElementById(`${this.tableId}-items-per-page`);
         const searchInput = document.getElementById(this.searchInputId);
@@ -304,7 +318,7 @@ class Pagination {
 
     changeTypeDisplayToTable() {
         const container = document.getElementById(this.tableId);
-        container.classList.remove('row');
+        container.classList.remove(this.cssClasses.row);
         this.cardRenderer = null;
         this.init();
     }
