@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/lamlib/pagination/compare/v1.3.0...v1.4.0) (2026-01-26)
+
+
+### Features
+
+* **add config class css:** add option for write config class ([fb78cc3](https://github.com/lamlib/pagination/commit/fb78cc33de6c2d8e32e6754dfe1871799c3330ee))
+
 ## [1.3.0](https://github.com/lamlib/pagination/compare/v1.1.0...v1.3.0) (2025-12-30)
 
 
