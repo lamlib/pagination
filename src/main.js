@@ -318,7 +318,7 @@ export default class Pagination {
 
     changeTypeDisplayToTable() {
         const container = document.getElementById(this.tableId);
-        container.classList.remove(this.cssClasses.row);
+        container.classList.remove(...this.cssClasses.row?.split(" "));
         this.cardRenderer = null;
         this.init();
     }
