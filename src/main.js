@@ -49,7 +49,7 @@ const XLSExport = (function () {
     };
 })();
 
-class Pagination {
+export default class Pagination {
     constructor(options) {
         this.cssClasses = {
             btnActive: 'btn btn-info',
