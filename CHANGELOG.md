@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.2](https://github.com/lamlib/pagination/compare/v1.4.1...v1.4.2) (2026-01-26)
+
+
+### Bug Fixes
+
+* fix bug render by card ([714d727](https://github.com/lamlib/pagination/commit/714d72799335b691dbee18febc3765d546800e3b))
+
 ### [1.4.1](https://github.com/lamlib/pagination/compare/v1.4.0...v1.4.1) (2026-01-26)
 
 
